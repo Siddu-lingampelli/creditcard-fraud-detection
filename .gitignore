@@ -1,4 +1,6 @@
-
+.venv/
+data/
+results/
 .hadoop/
 __pycache__/
 .pytest_cache/
