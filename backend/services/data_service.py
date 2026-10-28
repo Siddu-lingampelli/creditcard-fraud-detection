@@ -19,7 +19,9 @@ def default_dataset_available():
 def resolve_dataset_path(dataset_id_or_path):
     if dataset_id_or_path == "default":
         return DEFAULT_DATASET_PATH
-    return Path(dataset_id_or_path)
+    if any(part in str(dataset_id_or_path) for part in ("..", "/", "\\")):
+        raise ValueError("Invalid dataset id.")
+    return UPLOADS_DIR / dataset_id_or_path
 
 
 def validate_csv_path(path):

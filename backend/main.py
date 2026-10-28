@@ -112,8 +112,8 @@ def create_training_job(dataset_id: str, target: str = "Class", seed: int = 42, 
     job_id = create_job("training", dataset_id)
     output_dir = _run_dir(job_id)
     output_dir.mkdir(parents=True, exist_ok=True)
-    start_training_job(job_id, str(dataset_path), str(output_dir), target, seed, test_size, threshold)
     update_job(job_id, status="queued", progress=0.0, message="Queued")
+    start_training_job(job_id, str(dataset_path), str(output_dir), target, seed, test_size, threshold)
     return {"job_id": job_id}
 
 
@@ -139,8 +139,8 @@ def create_prediction_job(dataset_id: str, model_job_id: Optional[str] = None, t
     job_id = create_job("prediction", dataset_id)
     output_dir = _run_dir(job_id)
     output_dir.mkdir(parents=True, exist_ok=True)
-    start_prediction_job(job_id, str(dataset_path), model_path, str(output_dir), target)
     update_job(job_id, status="queued", progress=0.0, message="Queued")
+    start_prediction_job(job_id, str(dataset_path), model_path, str(output_dir), target)
     return {"job_id": job_id}
 
 
@@ -235,8 +235,9 @@ def transactions(
     min_probability: Optional[float] = None,
     search: Optional[str] = None,
 ):
-    selected_job_id = job_id or latest_job_id()
-    if not selected_job_id:
+    if job_id:
+        selected_job_id = job_id
+    else:
         completed = _latest_completed_job()
         selected_job_id = completed["job_id"] if completed else None
     if not selected_job_id:
@@ -276,8 +277,9 @@ def transactions(
 
 @router.get("/transactions/{transaction_id}")
 def transaction_detail(transaction_id: int, job_id: Optional[str] = None):
-    selected_job_id = job_id or latest_job_id()
-    if not selected_job_id:
+    if job_id:
+        selected_job_id = job_id
+    else:
         completed = _latest_completed_job()
         selected_job_id = completed["job_id"] if completed else None
     if not selected_job_id:
@@ -291,8 +293,9 @@ def transaction_detail(transaction_id: int, job_id: Optional[str] = None):
 
 @router.get("/exports/predictions")
 def export_predictions(job_id: Optional[str] = None):
-    selected_job_id = job_id or latest_job_id()
-    if not selected_job_id:
+    if job_id:
+        selected_job_id = job_id
+    else:
         completed = _latest_completed_job()
         selected_job_id = completed["job_id"] if completed else None
     if not selected_job_id:

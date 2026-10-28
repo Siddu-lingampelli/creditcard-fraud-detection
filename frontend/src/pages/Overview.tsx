@@ -12,9 +12,19 @@ export default function Overview() {
     getMetrics().then(setMetrics).catch(() => {})
   }, [])
 
-  const result = summary?.latest_job?.result
-  const total = result ? result.test_rows + result.train_rows : 0
-  const fraud = metrics?.metrics ? 0 : 0
+  const latestJob = summary?.latest_job
+  const result = latestJob?.result
+  const isPrediction = latestJob?.job_type === 'prediction'
+  const total = isPrediction
+    ? result?.rows ?? 0
+    : result
+      ? (result.train_rows ?? 0) + (result.test_rows ?? 0)
+      : 0
+  const fraud = isPrediction
+    ? result?.predicted_fraud ?? 0
+    : metrics?.metrics
+      ? (metrics.metrics.tp ?? 0) + (metrics.metrics.fp ?? 0)
+      : 0
 
   const pieData = [
     { name: 'Legitimate', value: result ? result.test_class_counts?.['0'] ?? 0 : 0 },
