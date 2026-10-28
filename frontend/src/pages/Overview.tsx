@@ -33,7 +33,11 @@ export default function Overview() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Overview</h2>
+      <div className="mb-8">
+      <p className="text-xs uppercase tracking-[0.3em] text-[#686868] mb-3">Fraud intelligence</p>
+      <h1 className="text-5xl md:text-6xl signature-gradient mb-3">Credit Card Fraud Detection</h1>
+      <p className="text-[#686868]">Spark MLlib pipeline - held-out evaluation - metrics from real runs only</p>
+    </div>
       {error && <p className="text-red-600">{error}</p>}
       {!summary?.has_results && (
         <div className="bg-[#191919] rounded shadow p-6 mb-6">
