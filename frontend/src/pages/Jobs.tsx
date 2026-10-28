@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getJobs } from '../api'
 
 export default function Jobs() {
@@ -14,11 +15,14 @@ export default function Jobs() {
       {jobs.length === 0 && <p>No jobs yet.</p>}
       {jobs.map((job) => (
         <div key={job.job_id} className="bg-[#191919] rounded shadow p-4 mb-3">
-          <p className="font-semibold">{job.job_type} — {job.status}</p>
+          <p className="font-semibold">{job.job_type} - {job.status}</p>
           <p className="text-sm text-[#686868]">Job ID: {job.job_id}</p>
           <p className="text-sm text-[#686868]">Dataset: {job.dataset_id}</p>
           <p className="text-sm text-[#686868]">Created: {new Date(job.created_at * 1000).toLocaleString()}</p>
           {job.error && <p className="text-red-600 text-sm">{job.error}</p>}
+          {job.status === 'completed' && (
+            <Link to={`/transactions?job_id=${job.job_id}`} className="text-[#dd7627] text-sm">View results</Link>
+          )}
         </div>
       ))}
     </div>

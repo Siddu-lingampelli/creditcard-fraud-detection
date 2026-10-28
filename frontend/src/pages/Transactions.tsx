@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { getTransactions, getTransaction } from '../api'
 
 export default function Transactions() {
+  const [searchParams] = useSearchParams()
   const [data, setData] = useState<any>({ items: [], total: 0 })
   const [page, setPage] = useState(1)
   const [predicted, setPredicted] = useState('')
@@ -9,7 +11,7 @@ export default function Transactions() {
   const [detail, setDetail] = useState<any>(null)
 
   useEffect(() => {
-    getTransactions({ page, page_size: 25, predicted: predicted || undefined, min_probability: minProb || undefined })
+    getTransactions({ page, page_size: 25, job_id: searchParams.get('job_id') || undefined, predicted: predicted || undefined, min_probability: minProb || undefined })
       .then(setData)
       .catch(() => {})
   }, [page, predicted, minProb])
