@@ -1,0 +1,15 @@
+.venv/
+data/
+results/
+.hadoop/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+*.pem
+*.key
+secrets/
+frontend/node_modules/
+frontend/dist/
+backend/__pycache__/
+
