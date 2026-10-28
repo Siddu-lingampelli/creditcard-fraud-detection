@@ -69,9 +69,10 @@ export default function FraudDetection() {
     <div>
       <h2 className="text-2xl font-bold mb-6">Fraud Detection</h2>
       {error && <p className="text-red-600 mb-4">{error}</p>}
-      <div className="bg-[#191919] rounded shadow p-4 mb-6">
+      <div className="bg-[#191919] rounded shadow p-4 mb-6 border border-[#212121]">
         <label className="block mb-2 font-medium">Upload CSV dataset</label>
-        <input type="file" accept=".csv" onChange={handleUpload} />
+        <p className="text-sm text-[#686868] mb-3">Choose a credit card transactions CSV file.</p>
+        <input type="file" accept=".csv" onChange={handleUpload} className="block w-full text-sm text-[#ebebeb] file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-[#dd7627] file:text-[#121212]" />
       </div>
       <div className="bg-[#191919] rounded shadow p-4 mb-6">
         <label className="block mb-2 font-medium">Select dataset</label>
