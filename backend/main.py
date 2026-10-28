@@ -12,6 +12,7 @@ from backend.services.data_service import (
     save_upload,
     summarize_csv,
     validate_csv_path,
+    validate_creditcard_columns,
     default_dataset_available,
     default_dataset_summary,
     resolve_dataset_path,
@@ -74,6 +75,10 @@ async def upload_dataset(file: UploadFile = File(...)):
     if len(content) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="Uploaded file is too large.")
     try:
+        import csv, io
+        reader = csv.reader(io.StringIO(content.decode('utf-8', errors='replace')))
+        header = next(reader, None) or []
+        validate_creditcard_columns(header)
         summary = save_upload(file.filename, content)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc))

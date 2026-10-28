@@ -24,6 +24,17 @@ def resolve_dataset_path(dataset_id_or_path):
     return UPLOADS_DIR / dataset_id_or_path
 
 
+REQUIRED_BASE_COLUMNS = ["Time", "Amount"] + [f"V{i}" for i in range(1, 29)]
+
+
+def validate_creditcard_columns(columns, require_target=False, target="Class"):
+    missing = [column for column in REQUIRED_BASE_COLUMNS if column not in columns]
+    if require_target and target not in columns:
+        missing.append(target)
+    if missing:
+        raise ValueError("This CSV does not look like the credit card fraud dataset. Missing: " + ", ".join(missing))
+
+
 def validate_csv_path(path):
     path = Path(path)
     if not path.is_file():

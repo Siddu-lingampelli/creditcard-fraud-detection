@@ -19,6 +19,7 @@ DEFAULT_TARGET = "Class"
 DEFAULT_SEED = 42
 DEFAULT_TEST_SIZE = 0.2
 DEFAULT_THRESHOLD = 0.5
+REQUIRED_BASE_COLUMNS = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
 ID_COLUMNS = {"id", "ID", "transaction_id", "TransactionID"}
 
 
@@ -47,6 +48,17 @@ def validate_binary_labels(values):
             raise ValueError(f"Target column contains an invalid binary label: {value!r}.")
         normalized.add(integer_value)
     return normalized
+
+
+def validate_creditcard_schema(columns, require_target=False, target=DEFAULT_TARGET):
+    missing = [column for column in REQUIRED_BASE_COLUMNS if column not in columns]
+    if require_target and target not in columns:
+        missing.append(target)
+    if missing:
+        raise ValueError(
+            "This CSV does not look like the credit card fraud dataset. Missing columns: "
+            + ", ".join(missing)
+        )
 
 
 def get_feature_columns(columns, dtypes, target, id_columns=ID_COLUMNS):
@@ -120,9 +132,9 @@ def create_spark_session():
     return (
         SparkSession.builder
         .appName("CreditCardFraudDetection")
-        .master("local[2]")
+        .master("local[*]")
         .config("spark.driver.memory", "2g")
-        .config("spark.sql.shuffle.partitions", "8")
+        .config("spark.sql.shuffle.partitions", "4")
         .config("spark.hadoop.hadoop.io.nativeio.enabled", "false")
         .config("spark.hadoop.io.nativeio.enabled", "false")
         .getOrCreate()
@@ -167,6 +179,7 @@ def train_and_evaluate(input_path, output_dir, target=DEFAULT_TARGET, seed=DEFAU
         df.printSchema()
         original_count = df.count()
         print(f"Row count: {original_count}")
+        validate_creditcard_schema(df.columns, require_target=True, target=target)
         feature_columns, class_counts = validate_dataset(df, target)
         print(f"Feature count: {len(feature_columns)}")
         print(f"Feature columns: {feature_columns}")
@@ -308,6 +321,7 @@ def predict_with_model(input_path, model_path, output_dir, target=DEFAULT_TARGET
     try:
         spark.sparkContext.setLogLevel("WARN")
         df = spark.read.csv(str(input_path), header=True, inferSchema=True)
+        validate_creditcard_schema(df.columns, require_target=False)
         model = PipelineModel.load(str(model_path))
         assembler = model.stages[0]
         feature_columns = list(assembler.getInputCols())
