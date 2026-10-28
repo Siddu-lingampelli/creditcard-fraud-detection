@@ -22,6 +22,7 @@ export default function FraudDetection() {
 
   useEffect(() => {
     loadDatasets()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {

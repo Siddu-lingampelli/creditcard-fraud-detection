@@ -14,7 +14,7 @@ export default function Transactions() {
     getTransactions({ page, page_size: 25, job_id: searchParams.get('job_id') || undefined, predicted: predicted || undefined, min_probability: minProb || undefined })
       .then(setData)
       .catch(() => {})
-  }, [page, predicted, minProb])
+  }, [page, predicted, minProb, searchParams])
 
   return (
     <div>
@@ -42,8 +42,8 @@ export default function Transactions() {
             {data.items.map((row: any) => (
               <tr key={row._id} className="border-t cursor-pointer hover:bg-[#212121]" onClick={() => getTransaction(row._id).then(setDetail)}>
                 <td className="p-2">{row._id}</td>
-                <td className="p-2">{row.amount ?? '—'}</td>
-                <td className="p-2">{row.actual_class ?? '—'}</td>
+                <td className="p-2">{row.amount ?? 'â€”'}</td>
+                <td className="p-2">{row.actual_class ?? 'â€”'}</td>
                 <td className="p-2">{row.prediction === '1.0' ? 'Fraud' : 'Legitimate'}</td>
                 <td className="p-2">{row.fraud_probability}</td>
               </tr>

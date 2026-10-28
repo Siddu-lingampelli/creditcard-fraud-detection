@@ -43,7 +43,7 @@ function Metric({ label, value, help }: { label: string; value: number; help: st
   return (
     <div className="bg-[#191919] rounded shadow p-4">
       <p className="text-sm text-[#686868]">{label}</p>
-      <p className="text-2xl font-bold">{typeof value === 'number' ? value.toFixed(4) : '—'}</p>
+      <p className="text-2xl font-bold">{typeof value === 'number' ? value.toFixed(4) : 'â€”'}</p>
       <p className="text-xs text-[#686868] mt-2">{help}</p>
     </div>
   )
@@ -53,7 +53,7 @@ function Cell({ label, value }: { label: string; value: number }) {
   return (
     <div className="bg-[#212121] rounded p-3">
       <p className="text-xs text-[#686868]">{label}</p>
-      <p className="text-xl font-bold">{value ?? '—'}</p>
+      <p className="text-xl font-bold">{value ?? 'â€”'}</p>
     </div>
   )
 }

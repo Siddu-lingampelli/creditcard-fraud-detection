@@ -45,10 +45,10 @@ export default function Overview() {
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <Card title="Total transactions" value={total || '—'} />
-        <Card title="Predicted fraud" value={fraud || '—'} />
-        <Card title="ROC-AUC" value={metrics?.metrics?.roc_auc?.toFixed?.(4) ?? '—'} />
-        <Card title="F1-score" value={metrics?.metrics?.f1?.toFixed?.(4) ?? '—'} />
+        <Card title="Total transactions" value={total || 'â€”'} />
+        <Card title="Predicted fraud" value={fraud || 'â€”'} />
+        <Card title="ROC-AUC" value={metrics?.metrics?.roc_auc?.toFixed?.(4) ?? 'â€”'} />
+        <Card title="F1-score" value={metrics?.metrics?.f1?.toFixed?.(4) ?? 'â€”'} />
       </div>
       {summary?.has_results && (
         <div className="bg-[#191919] rounded shadow p-6">

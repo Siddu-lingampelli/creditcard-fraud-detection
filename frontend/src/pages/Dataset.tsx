@@ -15,7 +15,7 @@ export default function Dataset() {
       {datasets.map((d) => (
         <div key={d.dataset_id} className="bg-[#191919] rounded shadow p-4 mb-4">
           <p className="font-semibold">{d.original_filename || d.name}</p>
-          <p className="text-sm text-[#686868]">Rows: {d.row_count} · Columns: {d.column_count}</p>
+          <p className="text-sm text-[#686868]">Rows: {d.row_count} Â· Columns: {d.column_count}</p>
           <p className="text-sm text-[#686868]">Columns: {d.columns.join(', ')}</p>
           {d.class_counts && Object.keys(d.class_counts).length > 0 && (
             <p className="text-sm text-[#686868]">Class counts: {JSON.stringify(d.class_counts)}</p>
